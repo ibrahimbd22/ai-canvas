@@ -1,0 +1,35 @@
+/* Tailwind CSS imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles & Font Setup */
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    color: #E2E8F0; /* Slate 200 */
+  }
+}
+
+/* Light/Dark Mode Styling */
+.dark-bg {
+    background-color: #0F172A; /* Slate 900 */
+    color: #F8FAFC; /* Slate 50 */
+}
+
+.card-bg {
+    background: linear-gradient(145deg, #1E293B, #0F172A); /* Slate 800/900 gradient */
+    border: 1px solid #334155; /* Slate 700 */
+}
+
+.status-posted {
+    @apply bg-emerald-500 text-white font-semibold;
+}
+
+.status-pending {
+    @apply bg-yellow-500 text-gray-900 font-semibold;
+}
+
+.status-failed {
+    @apply bg-red-600 text-white font-semibold;
+}
