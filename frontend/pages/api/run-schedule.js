@@ -39,7 +39,7 @@ async function savePostToFirestore(postData) {
  * নির্দিষ্ট ক্যাটাগরির জন্য ইউনিক প্রম্পট তৈরি করে ছবি জেনারেট করে।
  */
 async function generateImage(category) {
-  const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+  const ai = new GoogleGenAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
 
   // উচ্চ মানের ক্যাটাগরি-ভিত্তিক প্রম্পট
   const promptMap = {
