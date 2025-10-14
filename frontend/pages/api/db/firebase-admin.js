@@ -1,32 +1,39 @@
 // ai-canvas/frontend/pages/api/db/firebase-admin.js
-// Firebase Admin SDK শুধুমাত্র Serverless Environment-এ চলবে (Next.js API Routes-এ)
+// ✅ Firebase Admin SDK - Only for Serverless Environment (Next.js API Routes)
 
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
 
-// Vercel Environment Variables থেকে Service Account Key লোড করা হবে
-// বাস্তবক্ষেত্রে, আপনাকে একটি JSON Service Account File থেকে এটিকে এনকোড করে 
-// Vercel-এর Environment Variable-এ (FIREBASE_SERVICE_ACCOUNT) রাখতে হবে।
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+// --- ১. Firebase Service Account Configuration ---
+// FIREBASE_SERVICE_ACCOUNT: Environment Variable (one-line JSON string from .env / Vercel)
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+  : null;
 
-// শুধুমাত্র একবার Firebase অ্যাপ শুরু করা
-if (!admin.apps.length) {
+if (!serviceAccount) {
+  console.error("❌ FIREBASE_SERVICE_ACCOUNT environment variable not found!");
+}
+
+// --- ২. Initialize Firebase App (only once) ---
+if (!admin.apps.length && serviceAccount) {
   try {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
+      // databaseURL ঐচ্ছিক — Firestore এর জন্য প্রয়োজন হয় না
     });
+    console.log("✅ Firebase Admin initialized successfully.");
   } catch (error) {
-    console.error("Firebase Admin initialization error", error.stack);
+    console.error("❌ Firebase Admin initialization error:", error);
   }
 }
 
-// Firestore ইনস্ট্যান্স এক্সপোর্ট করা
+// --- ৩. Firestore instance ---
 const db = admin.firestore();
 
-/**
- * পোস্ট ডেটা সংরক্ষণের জন্য Firestore Collection Path.
- * আমরা 'artifacts/{appId}' সিকিউরিটি রুল ব্যবহার করব।
- */
-const POSTS_COLLECTION = `artifacts/ai-canvas-scheduler/public/data/posts`; 
+// --- ৪. Collection Path ---
+// 🔸 Firestore best practice: Root-level collections, not nested under documents.
+// তোমার আগের path (artifacts/.../data/posts) document nesting হয়ে যাচ্ছিল, যা ideal নয়।
+// নিচের মতো সরল ও কার্যকর নাম ব্যবহার করো:
+const POSTS_COLLECTION = "ai_canvas_posts";
 
-export { db, POSTS_COLLECTION };
+// --- ৫. Export objects ---
+export { admin, db, POSTS_COLLECTION };
