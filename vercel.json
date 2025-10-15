@@ -13,13 +13,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "frontend/$1"
+      "dest": "frontend"
     }
-  ],
-  "env": {
-    "GEMINI_API_KEY": "gemini_api_key",
-    "FB_PAGE_ID": "fb_page_id",
-    "FB_PAGE_ACCESS_TOKEN": "fb_page_access_token",
-    "CRON_SECRET": "cron_secret"
-  }
+  ]
 }
