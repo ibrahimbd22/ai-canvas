@@ -33,6 +33,15 @@ async function savePostToFirestore(postData) {
   }
 }
 
+// Environment Variables (Vercel will inject these)
+// These should be set in Vercel Dashboard, NOT the .env file for security.
+
+const CRON_SECRET = process.env.CRON_SECRET;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const FB_PAGE_ID = process.env.FB_PAGE_ID;
+const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
+const NEXT_FB_PAGE_ID = process.env.NEXT_FB_PAGE_ID;
+
 // --- ২. Gemini AI লজিক (ইউনিক ইমেজ সিড সহ) ---
 
 /**
